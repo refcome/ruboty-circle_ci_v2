@@ -13,20 +13,34 @@ module Ruboty
         private
 
         def run_pipeline
-          connection.post do |request|
+          pipeline_response = connection.post("project/#{project_slug}/pipeline") do |request|
             request.body = {
               branch: branch,
               parameters: parameters
             }.to_json
           end
-        end
+          pipeline = JSON.parse(pipeline_response.body)
 
-        def branch
-          message[:branch]
+          workflow_response = connection.get("pipeline/#{pipeline["id"]}/workflow")
+          workflow = JSON.parse(workflow_response.body)
+          workflow_item_id = workflow["items"].first["id"]
+          workflow_item_url = "https://app.circleci.com/pipelines/#{project_slug}/#{pipeline["number"]}/workflows/#{workflow_item_id}"
+
+          message.reply("Triggered #{workflow_item_url}")
+        rescue => e
+          message.reply("An error has occurred: #{e.message}")
         end
 
         def parameters
           JSON.parse(message[:params])
+        end
+
+        def project_slug
+          message[:project_slug]
+        end
+
+        def branch
+          message[:branch]
         end
       end
     end

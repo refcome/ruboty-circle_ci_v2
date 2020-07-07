@@ -10,7 +10,7 @@ module Ruboty
         private
 
         def report
-          message.reply("Remembered #{sender_name}'s CircleCI personal access token")
+          message.reply("Remembered #{sender_name}'s CircleCI personal api token")
         end
 
         def remember

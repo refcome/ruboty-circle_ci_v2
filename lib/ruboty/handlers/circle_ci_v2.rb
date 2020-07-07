@@ -2,13 +2,13 @@ module Ruboty
   module Handlers
     class CircleCIV2 < Base
       on(
-        /remember my ciecleci personal api token (?<token>.+)\z/,
+        /remember my circleci personal api token (?<token>.+)\z/,
         name: "remember",
         description: "Remember sender's CircleCI personal api token",
       )
 
       on(
-        /run circleci pipeline of branch (?<branch>.+) on (?<repo>.+) with params (?<params>.+)\z/,
+        /run circleci pipeline of branch (?<branch>.+) on (?<project_slug>.+) with params (?<params>.+)\z/,
         name: "run_pipeline",
         description: "Run pipeline with params",
       )

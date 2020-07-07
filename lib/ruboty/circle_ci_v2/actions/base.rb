@@ -16,16 +16,12 @@ module Ruboty
           message.robot.brain.data[NAMESPACE] ||= {}
         end
 
-        def body
-          message[:description] || ""
-        end
-
         def sender_name
           message.from_name
         end
 
         def require_personal_api_token
-          message.reply("I don't know your CircleCI Personal API Token")
+          message.reply("I don't know your CircleCI personal api token")
         end
 
         def has_personal_api_token?
@@ -37,7 +33,7 @@ module Ruboty
         end
 
         def connection
-          Faraday.new(url: api_endpoint) do |builder|
+          Faraday.new(url: circle_ci_v2_base_url) do |builder|
             builder.request :url_encoded
             builder.adapter :net_http
             builder.basic_auth personal_api_token, ""
@@ -45,16 +41,8 @@ module Ruboty
           end
         end
 
-        def repository
-          message[:repo]
-        end
-
-        def api_endpoint
-          "#{circle_ci_v2_base_url}/#{repository}/pipeline"
-        end
-
         def circle_ci_v2_base_url
-          "https://circleci.com/api/v2/project"
+          "https://circleci.com/api/v2"
         end
       end
     end
