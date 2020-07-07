@@ -23,10 +23,17 @@ module Ruboty
 
           workflow_response = connection.get("pipeline/#{pipeline["id"]}/workflow")
           workflow = JSON.parse(workflow_response.body)
-          workflow_item_id = workflow["items"].first["id"]
-          workflow_item_url = "https://app.circleci.com/pipelines/#{project_slug}/#{pipeline["number"]}/workflows/#{workflow_item_id}"
 
-          message.reply("Triggered #{workflow_item_url}")
+          if workflow["items"].empty?
+            pipeline_url = "https://app.circleci.com/pipelines/#{project_slug}?#{URI.encode_www_form(branch: branch)}"
+            message.reply("Triggered #{pipeline_url}")
+            return
+          end
+
+          workflow_item_id = workflow["items"].first["id"]
+          workflow_url = "https://app.circleci.com/pipelines/#{project_slug}/#{pipeline["number"]}/workflows/#{workflow_item_id}"
+
+          message.reply("Triggered #{workflow_url}")
         rescue => e
           message.reply("An error has occurred: #{e.message}")
         end

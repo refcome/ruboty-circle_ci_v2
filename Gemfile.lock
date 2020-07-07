@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruboty-circle_ci_v2 (0.1.0)
+    ruboty-circle_ci_v2 (0.3.0)
       faraday
       ruboty
 
